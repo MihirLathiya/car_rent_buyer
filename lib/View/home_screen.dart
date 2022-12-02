@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
               child: Container(
-                margin: EdgeInsets.only(bottom: 5, right: 5, left: 5),
+                margin: EdgeInsets.only(bottom: 5, right: 10, left: 10),
                 width: Get.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -142,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
+                          reverse: true,
                           itemCount: carData.length,
                           itemBuilder: (BuildContext context, int index) {
                             List x = carData[index]['CarImage'];

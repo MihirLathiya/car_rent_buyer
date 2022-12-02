@@ -37,7 +37,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
               child: Container(
-                margin: EdgeInsets.only(bottom: 5, right: 5, left: 5),
+                margin: EdgeInsets.only(bottom: 5, right: 10, left: 10),
                 width: Get.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(

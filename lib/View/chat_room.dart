@@ -29,273 +29,270 @@ class _ChatRoomState extends State<ChatRoom> {
   ImageAddController imageAddController = Get.put(ImageAddController());
 
   UserdataController userdataController = Get.put(UserdataController());
-  @override
-  Widget build(BuildContext context) {
-    Widget chats() {
-      return BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: 4,
-          sigmaY: 4,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-              // color: Colors.white12,/
-              ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: PreferredSize(
-              child: Container(
-                margin: EdgeInsets.only(bottom: 5, right: 5, left: 5),
-                width: Get.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  color: Colors.white12,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SafeArea(
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios_sharp,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection('seller')
-                                  .doc('${widget.sellerId}')
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<
-                                          DocumentSnapshot<
-                                              Map<String, dynamic>>>
-                                      snapshot) {
-                                if (snapshot.hasData) {
-                                  log('MESSAGE ${snapshot.data!['status']}');
-                                  return Row(
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white38,
-                                        backgroundImage: NetworkImage(
-                                            '${snapshot.data!['image']}'),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      CommonText(
-                                        text: '${widget.sellerName}',
-                                        size: 16,
-                                        color: AppColors.white,
-                                        weight: FontWeight.w700,
-                                      ),
-                                      snapshot.data!['status'] == 'Online'
-                                          ? Icon(
-                                              Icons.sunny,
-                                              color: Colors.green,
-                                            )
-                                          : Icon(
-                                              Icons.nightlight_outlined,
-                                              color: Colors.red,
-                                            ),
-                                    ],
-                                  );
-                                } else {
-                                  return SizedBox();
-                                }
-                              },
-                            ),
-                            Spacer(),
-                            PopupMenuButton(
-                              color: Colors.white38,
-                              icon: Icon(
-                                Icons.more_vert,
-                                color: Colors.white,
-                              ),
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    onTap: () {
-                                      imageAddController.pickImage1();
-                                      log('message');
-                                    },
-                                    child: Text('Select Bg'),
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('Clear Chat'),
-                                  ),
-                                ];
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                ),
-              ),
-              preferredSize: Size(width, 70),
+  Widget chats() {
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+        sigmaX: 4,
+        sigmaY: 4,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+            // color: Colors.white12,/
             ),
-            body: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('chatroom')
-                        .doc(widget.roomId)
-                        .collection('chat')
-                        .orderBy('time', descending: true)
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                            snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          itemCount: snapshot.data!.docs.length,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            var message = snapshot.data!.docs[index];
-                            var myDateTime;
-                            var myDateTime2;
-                            var time1;
-                            var time2;
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: PreferredSize(
+            child: Container(
+              margin: EdgeInsets.only(bottom: 5, right: 5, left: 5),
+              width: Get.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+                color: Colors.white12,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SafeArea(
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios_sharp,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('seller')
+                                .doc('${widget.sellerId}')
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<
+                                        DocumentSnapshot<Map<String, dynamic>>>
+                                    snapshot) {
+                              if (snapshot.hasData) {
+                                log('MESSAGE ${snapshot.data!['status']}');
+                                return Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white38,
+                                      backgroundImage: NetworkImage(
+                                          '${snapshot.data!['image']}'),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    CommonText(
+                                      text: '${snapshot.data!['name']}',
+                                      size: 16,
+                                      color: AppColors.white,
+                                      weight: FontWeight.w700,
+                                    ),
+                                    snapshot.data!['status'] == 'Online'
+                                        ? Icon(
+                                            Icons.sunny,
+                                            color: Colors.green,
+                                          )
+                                        : Icon(
+                                            Icons.nightlight_outlined,
+                                            color: Colors.red,
+                                          ),
+                                  ],
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            },
+                          ),
+                          Spacer(),
+                          PopupMenuButton(
+                            color: Colors.white38,
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Colors.white,
+                            ),
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  onTap: () {
+                                    imageAddController.pickImage1();
+                                    log('message');
+                                  },
+                                  child: Text('Select Bg'),
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Clear Chat'),
+                                ),
+                              ];
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+            ),
+            preferredSize: Size(width, 70),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('chatroom')
+                      .doc(widget.roomId)
+                      .collection('chat')
+                      .orderBy('time', descending: true)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: snapshot.data!.docs.length,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          var message = snapshot.data!.docs[index];
+                          var myDateTime;
+                          var myDateTime2;
+                          var time1;
+                          var time2;
 
+                          try {
+                            time1 = snapshot.data!.docs[index]['time'];
                             try {
-                              time1 = snapshot.data!.docs[index]['time'];
-                              try {
-                                time2 = snapshot.data!.docs[index + 1]['time'];
-                              } catch (e) {}
-                              myDateTime = time1
+                              time2 = snapshot.data!.docs[index + 1]['time'];
+                            } catch (e) {}
+                            myDateTime = time1
+                                .toDate()
+                                .toString()
+                                .split(' ')
+                                .first
+                                .toString();
+                            try {
+                              myDateTime2 = time2
                                   .toDate()
                                   .toString()
                                   .split(' ')
                                   .first
                                   .toString();
-                              try {
-                                myDateTime2 = time2
-                                    .toDate()
-                                    .toString()
-                                    .split(' ')
-                                    .first
-                                    .toString();
-                              } catch (e) {}
-                            } catch (e) {
-                              log('DATE ERROR');
+                            } catch (e) {}
+                          } catch (e) {
+                            log('DATE ERROR');
+                          }
+
+                          Widget seprate = SizedBox();
+
+                          try {
+                            if (index != 0 && myDateTime != myDateTime2) {
+                              var day = myDateTime.toString().split('-').last;
+                              var month = myDateTime.toString().split('-')[1];
+                              var year = myDateTime.toString().split('-').first;
+                              var cDate =
+                                  DateTime.now().toString().split(' ').first;
+                              var cDay = cDate.toString().split('-').last;
+                              var cMonth = cDate.toString().split('-')[1];
+                              var cYear = cDate.toString().split('-').first;
+                              var currentDate = '$cDay $cMonth $cYear';
+                              var notCurrentDate = '$day $month $year';
+
+                              var extractMonth = month == 1
+                                  ? 'January'
+                                  : month == 2
+                                      ? 'February'
+                                      : month == 3
+                                          ? 'March'
+                                          : month == 4
+                                              ? 'April'
+                                              : month == 5
+                                                  ? 'May'
+                                                  : month == 6
+                                                      ? 'June'
+                                                      : month == 7
+                                                          ? 'July'
+                                                          : month == 8
+                                                              ? 'August'
+                                                              : month == 9
+                                                                  ? 'September'
+                                                                  : month == 10
+                                                                      ? 'October'
+                                                                      : month ==
+                                                                              11
+                                                                          ? 'November'
+                                                                          : 'December';
+
+                              seprate = Text(
+                                currentDate == notCurrentDate
+                                    ? 'Today'
+                                    : '$day $extractMonth $year',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              );
                             }
+                          } catch (e) {
+                            seprate = SizedBox();
+                            log('TIME ERROR');
+                          }
 
-                            Widget seprate = SizedBox();
-
-                            try {
-                              if (index != 0 && myDateTime != myDateTime2) {
-                                var day = myDateTime.toString().split('-').last;
-                                var month = myDateTime.toString().split('-')[1];
-                                var year =
-                                    myDateTime.toString().split('-').first;
-                                var cDate =
-                                    DateTime.now().toString().split(' ').first;
-                                var cDay = cDate.toString().split('-').last;
-                                var cMonth = cDate.toString().split('-')[1];
-                                var cYear = cDate.toString().split('-').first;
-                                var currentDate = '$cDay $cMonth $cYear';
-                                var notCurrentDate = '$day $month $year';
-
-                                var extractMonth = month == 1
-                                    ? 'January'
-                                    : month == 2
-                                        ? 'February'
-                                        : month == 3
-                                            ? 'March'
-                                            : month == 4
-                                                ? 'April'
-                                                : month == 5
-                                                    ? 'May'
-                                                    : month == 6
-                                                        ? 'June'
-                                                        : month == 7
-                                                            ? 'July'
-                                                            : month == 8
-                                                                ? 'August'
-                                                                : month == 9
-                                                                    ? 'September'
-                                                                    : month ==
-                                                                            10
-                                                                        ? 'October'
-                                                                        : month ==
-                                                                                11
-                                                                            ? 'November'
-                                                                            : 'December';
-
-                                seprate = Text(
-                                  currentDate == notCurrentDate
-                                      ? 'Today'
-                                      : '$day $extractMonth $year',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                );
-                              }
-                            } catch (e) {
-                              seprate = SizedBox();
-                              log('TIME ERROR');
-                            }
-
-                            return Column(
-                              children: [
-                                seprate,
-                                ContainerDecoration(
-                                  message: message,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          message['message'],
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          ),
+                          return Column(
+                            children: [
+                              seprate,
+                              ContainerDecoration(
+                                message: message,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        message['message'],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      } else {
-                        return loading();
-                      }
-                    },
-                  ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      return loading();
+                    }
+                  },
                 ),
-                sendMessage(Get.width, Get.height),
-              ],
-            ),
+              ),
+              sendMessage(Get.width, Get.height),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return GetBuilder<UserdataController>(
       builder: (controller) {
         log('BACK IMAGE :- ${controller.bgImage}');

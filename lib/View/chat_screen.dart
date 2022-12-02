@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:car_buyer/Common/chat_room.dart';
@@ -24,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  List chatsId = [];
+  // List chatsId = [];
 
   @override
   Widget build(BuildContext context) {
@@ -104,30 +103,23 @@ class _ChatScreenState extends State<ChatScreen> {
                                 .snapshots(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                log('DATA:-${snapshot1.data!.docs[index1].id}');
-
-                                if (snapshot1.data!.docs[index1].id
-                                    .contains(firebaseAuth.currentUser!.uid)) {
-                                  chatsId.add(snapshot1.data!.docs[index1].id);
-                                }
-                                chatsId.toSet().toList();
-                                log('IDS:-$chatsId');
-
                                 return ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.only(left: 10, right: 10),
                                   itemCount: snapshot.data!.docs.length,
                                   itemBuilder: (context, index) {
-                                    if (firebaseAuth.currentUser!.uid +
-                                                snapshot.data!.docs[index].id ==
-                                            chatsId[index1] ||
-                                        snapshot.data!.docs[index].id +
-                                                firebaseAuth.currentUser!.uid ==
-                                            chatsId[index1]) {
-                                      if (snapshot1.data!.docs[index1]
-                                              ['isChat'] ==
-                                          true) {
+                                    if (snapshot1.data!.docs[index1].id
+                                        .contains(
+                                            firebaseAuth.currentUser!.uid)) {
+                                      if (firebaseAuth.currentUser!.uid +
+                                                  snapshot
+                                                      .data!.docs[index].id ==
+                                              snapshot1.data!.docs[index1].id ||
+                                          snapshot.data!.docs[index].id +
+                                                  firebaseAuth
+                                                      .currentUser!.uid ==
+                                              snapshot1.data!.docs[index1].id) {
                                         return Padding(
                                           padding:
                                               const EdgeInsets.only(top: 13),
@@ -193,8 +185,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                 .instance
                                                                 .collection(
                                                                     "chatroom")
-                                                                .doc(chatsId[
-                                                                    index1])
+                                                                .doc(snapshot1
+                                                                    .data!
+                                                                    .docs[
+                                                                        index1]
+                                                                    .id)
                                                                 .collection(
                                                                     'chat')
                                                                 .snapshots(),
@@ -254,11 +249,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                         (context,
                                                                             index3) {
                                                                       return CommonText(
-                                                                        text: snapshot2.data!.docs[index3]['sendBy'] ==
-                                                                                firebaseAuth.currentUser!.uid
-                                                                            ? 'You : ${snapshot2.data!.docs[index3]['message']}'
-                                                                            : '${snapshot.data!.docs[index]['name']} : ${snapshot2.data!.docs[index3]['message']}',
-                                                                        // '${snapshot2.data!.docs.last['message']}',
+                                                                        text:
+                                                                            '${snapshot2.data!.docs[index3]['message']}',
                                                                         color: Colors
                                                                             .white,
                                                                         size:
@@ -291,9 +283,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                             ),
                                           ),
                                         );
+                                      } else {
+                                        return SizedBox();
                                       }
+                                    } else {
+                                      return SizedBox();
                                     }
-                                    return SizedBox();
                                   },
                                 );
                               } else {
