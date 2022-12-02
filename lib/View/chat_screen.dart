@@ -243,8 +243,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                         true,
                                                                     reverse:
                                                                         true,
-                                                                    itemCount:
-                                                                        1,
+                                                                    itemCount: snapshot2
+                                                                        .data!
+                                                                        .docs
+                                                                        .length,
                                                                     itemBuilder:
                                                                         (context,
                                                                             index3) {
