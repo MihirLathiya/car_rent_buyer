@@ -283,7 +283,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   },
                                 );
                               } else {
-                                return CircularProgressIndicator();
+                                return loading();
                               }
                             },
                           );

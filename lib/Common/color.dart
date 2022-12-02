@@ -20,7 +20,7 @@ var width = Get.width;
 Widget loading() {
   return Center(
     child: Lottie.asset(
-      'assets/images/lf30_editor_mhm0vq9q.json',
+      'assets/images/56875-white-loader.json',
       height: 100,
       width: 100,
     ),
