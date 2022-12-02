@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "613475299345",
+    "project_id": "carrent-c9775",
+    "storage_bucket": "carrent-c9775.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613475299345:android:0ee6af2ed09a9241fd81b0",
+        "android_client_info": {
+          "package_name": "com.example.car_buyer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613475299345-reg5ho0e7gvp3also4g8e9h8p6vpar9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZESo6hZ3ZcR1Sd_465wCjVgeD6FBRTtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613475299345-reg5ho0e7gvp3also4g8e9h8p6vpar9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613475299345:android:a60ceb2af2a7edeafd81b0",
+        "android_client_info": {
+          "package_name": "com.example.car_buyer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613475299345-reg5ho0e7gvp3also4g8e9h8p6vpar9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZESo6hZ3ZcR1Sd_465wCjVgeD6FBRTtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613475299345-reg5ho0e7gvp3also4g8e9h8p6vpar9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
