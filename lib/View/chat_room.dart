@@ -4,16 +4,21 @@ import 'dart:ui';
 import 'package:car_buyer/Common/chat_room.dart';
 import 'package:car_buyer/Common/color.dart';
 import 'package:car_buyer/Common/common_text.dart';
+import 'package:car_buyer/Controller/add_image_controller.dart';
 import 'package:car_buyer/Controller/email_controller.dart';
+import 'package:car_buyer/Controller/get_user_data_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatRoom extends StatefulWidget {
-  final sellerId, sellerName, roomId, image;
-  const ChatRoom(
-      {Key? key, this.sellerId, this.sellerName, this.roomId, this.image})
-      : super(key: key);
+  final sellerId, sellerName, roomId;
+  const ChatRoom({
+    Key? key,
+    this.sellerId,
+    this.sellerName,
+    this.roomId,
+  }) : super(key: key);
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -21,23 +26,13 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   TextEditingController message = TextEditingController();
+  ImageAddController imageAddController = Get.put(ImageAddController());
 
+  UserdataController userdataController = Get.put(UserdataController());
   @override
   Widget build(BuildContext context) {
-    log('SELLER ID :- ${widget.sellerId}');
-    log('SELLER ID :- ${widget.roomId}');
-    log('SELLER ID :- ${widget.sellerName}');
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        image: DecorationImage(
-          image: AssetImage('assets/images/background.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: BackdropFilter(
+    Widget chats() {
+      return BackdropFilter(
         filter: ImageFilter.blur(
           sigmaX: 4,
           sigmaY: 4,
@@ -76,19 +71,6 @@ class _ChatRoomState extends State<ChatRoom> {
                                 color: Colors.white,
                               ),
                             ),
-                            CircleAvatar(
-                              backgroundColor: Colors.white38,
-                              backgroundImage: NetworkImage(widget.image),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CommonText(
-                              text: '${widget.sellerName}',
-                              size: 16,
-                              color: AppColors.white,
-                              weight: FontWeight.w700,
-                            ),
                             SizedBox(
                               width: 5,
                             ),
@@ -104,26 +86,67 @@ class _ChatRoomState extends State<ChatRoom> {
                                       snapshot) {
                                 if (snapshot.hasData) {
                                   log('MESSAGE ${snapshot.data!['status']}');
-                                  return snapshot.data!['status'] == 'Online'
-                                      ? Icon(
-                                          Icons.sunny,
-                                          color: Colors.green,
-                                        )
-                                      : Icon(
-                                          Icons.nightlight_outlined,
-                                          color: Colors.red,
-                                        );
+                                  return Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.white38,
+                                        backgroundImage: NetworkImage(
+                                            '${snapshot.data!['image']}'),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      CommonText(
+                                        text: '${widget.sellerName}',
+                                        size: 16,
+                                        color: AppColors.white,
+                                        weight: FontWeight.w700,
+                                      ),
+                                      snapshot.data!['status'] == 'Online'
+                                          ? Icon(
+                                              Icons.sunny,
+                                              color: Colors.green,
+                                            )
+                                          : Icon(
+                                              Icons.nightlight_outlined,
+                                              color: Colors.red,
+                                            ),
+                                    ],
+                                  );
                                 } else {
                                   return SizedBox();
                                 }
                               },
                             ),
+                            Spacer(),
+                            PopupMenuButton(
+                              color: Colors.white38,
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: Colors.white,
+                              ),
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    onTap: () {
+                                      imageAddController.pickImage1();
+                                      log('message');
+                                    },
+                                    child: Text('Select Bg'),
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Clear Chat'),
+                                  ),
+                                ];
+                              },
+                            )
                           ],
                         ),
                       ),
                       SizedBox(
                         height: 5,
                       ),
+                      Spacer(),
                     ],
                   ),
                 ),
@@ -260,9 +283,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           },
                         );
                       } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return loading();
                       }
                     },
                   ),
@@ -272,7 +293,38 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ),
         ),
-      ),
+      );
+    }
+
+    return GetBuilder<UserdataController>(
+      builder: (controller) {
+        log('BACK IMAGE :- ${controller.bgImage}');
+        return controller.bgImage.isNotEmpty
+            ? Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(
+                    image: NetworkImage('${controller.bgImage}'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: chats(),
+              )
+            : Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/background.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: chats(),
+              );
+      },
     );
   }
 
@@ -342,6 +394,8 @@ class _ChatRoomState extends State<ChatRoom> {
           'isCheck': false,
         },
       );
+
+      userdataController.getChatStatus(widget.roomId);
     } else {
       print('Enter Something');
     }

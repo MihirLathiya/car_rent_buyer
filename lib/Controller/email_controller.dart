@@ -44,7 +44,8 @@ class EmailController extends GetxController {
         'password': password,
         'name': name,
         'status': 'Online',
-        'image': image
+        'image': image,
+        'bgImage': '',
       });
       PrefrenceManager.setLogIn(email);
       PrefrenceManager.setName(name!);

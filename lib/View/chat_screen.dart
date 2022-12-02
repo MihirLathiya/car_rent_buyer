@@ -125,159 +125,173 @@ class _ChatScreenState extends State<ChatScreen> {
                                         snapshot.data!.docs[index].id +
                                                 firebaseAuth.currentUser!.uid ==
                                             chatsId[index1]) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 13),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            String roomId = await chatRoomId(
-                                                firebaseAuth.currentUser!.uid,
-                                                snapshot.data!.docs[index].id);
+                                      if (snapshot1.data!.docs[index1]
+                                              ['isChat'] ==
+                                          true) {
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 13),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              String roomId = await chatRoomId(
+                                                  firebaseAuth.currentUser!.uid,
+                                                  snapshot
+                                                      .data!.docs[index].id);
 
-                                            Get.to(
-                                              () => ChatRoom(
+                                              Get.to(
+                                                () => ChatRoom(
                                                   roomId: roomId,
                                                   sellerName: snapshot.data!
                                                       .docs[index]['name'],
                                                   sellerId: snapshot
                                                       .data!.docs[index].id,
-                                                  image: snapshot.data!
-                                                      .docs[index]['image']),
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 100,
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white12,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
+                                                ),
+                                              );
+                                            },
                                             child: Container(
+                                              height: 100,
+                                              padding: EdgeInsets.all(8),
                                               decoration: BoxDecoration(
                                                 color: Colors.white12,
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      '${snapshot.data!.docs[index]['image']}'),
-                                                  fit: BoxFit.cover,
-                                                ),
                                               ),
                                               child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                color: Colors.black38,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    CommonText(
-                                                      text:
-                                                          '${snapshot.data!.docs[index]['name']}',
-                                                      color: Colors.white,
-                                                      weight: FontWeight.w600,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    StreamBuilder(
-                                                      stream: FirebaseFirestore
-                                                          .instance
-                                                          .collection(
-                                                              "chatroom")
-                                                          .doc(chatsId[index1])
-                                                          .collection('chat')
-                                                          .snapshots(),
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<
-                                                                  QuerySnapshot<
-                                                                      Map<String,
-                                                                          dynamic>>>
-                                                              snapshot2) {
-                                                        if (snapshot2.hasData) {
-                                                          Timestamp time1 =
-                                                              snapshot2
-                                                                  .data!
-                                                                  .docs
-                                                                  .last['time'];
-                                                          DateTime myDateTime =
-                                                              time1
-                                                                  .toDate(); // Time
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white12,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        '${snapshot.data!.docs[index]['image']}'),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  color: Colors.black38,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      CommonText(
+                                                        text:
+                                                            '${snapshot.data!.docs[index]['name']}',
+                                                        color: Colors.white,
+                                                        weight: FontWeight.w600,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      StreamBuilder(
+                                                        stream:
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "chatroom")
+                                                                .doc(chatsId[
+                                                                    index1])
+                                                                .collection(
+                                                                    'chat')
+                                                                .snapshots(),
+                                                        builder: (BuildContext
+                                                                context,
+                                                            AsyncSnapshot<
+                                                                    QuerySnapshot<
+                                                                        Map<String,
+                                                                            dynamic>>>
+                                                                snapshot2) {
+                                                          if (snapshot2
+                                                              .hasData) {
+                                                            Timestamp time1 =
+                                                                snapshot2
+                                                                        .data!
+                                                                        .docs
+                                                                        .last[
+                                                                    'time'];
+                                                            DateTime
+                                                                myDateTime =
+                                                                time1
+                                                                    .toDate(); // Time
 
-                                                          var time2 =
-                                                              DateTime.now();
-                                                          var time3 = time2
-                                                                      .difference(
-                                                                          myDateTime)
-                                                                      .inSeconds >
-                                                                  60
-                                                              ? time2
-                                                                          .difference(
-                                                                              myDateTime)
-                                                                          .inMinutes >
-                                                                      60
-                                                                  ? time2.difference(myDateTime).inHours >
-                                                                          24
-                                                                      ? '${time2.difference(myDateTime).inDays}d'
-                                                                      : '${time2.difference(myDateTime).inHours}h'
-                                                                  : '${time2.difference(myDateTime).inMinutes}m'
-                                                              : '${time2.difference(myDateTime).inSeconds}s';
+                                                            var time2 =
+                                                                DateTime.now();
+                                                            var time3 = time2
+                                                                        .difference(
+                                                                            myDateTime)
+                                                                        .inSeconds >
+                                                                    60
+                                                                ? time2.difference(myDateTime).inMinutes >
+                                                                        60
+                                                                    ? time2.difference(myDateTime).inHours >
+                                                                            24
+                                                                        ? '${time2.difference(myDateTime).inDays}d'
+                                                                        : '${time2.difference(myDateTime).inHours}h'
+                                                                    : '${time2.difference(myDateTime).inMinutes}m'
+                                                                : '${time2.difference(myDateTime).inSeconds}s';
 
-                                                          return Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              SizedBox(
-                                                                height: 20,
-                                                                width: 200,
-                                                                child: ListView
-                                                                    .builder(
-                                                                  shrinkWrap:
-                                                                      true,
-                                                                  reverse: true,
-                                                                  itemCount: 1,
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          index3) {
-                                                                    return CommonText(
-                                                                      text: snapshot2.data!.docs[index3]['sendBy'] ==
-                                                                              firebaseAuth.currentUser!.uid
-                                                                          ? 'You : ${snapshot2.data!.docs[index3]['message']}'
-                                                                          : '${snapshot.data!.docs[index]['name']} : ${snapshot2.data!.docs[index3]['message']}', // '${snapshot2.data!.docs.last['message']}',
+                                                            return Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 20,
+                                                                  width: 200,
+                                                                  child: ListView
+                                                                      .builder(
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    reverse:
+                                                                        true,
+                                                                    itemCount:
+                                                                        1,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index3) {
+                                                                      return CommonText(
+                                                                        text: snapshot2.data!.docs[index3]['sendBy'] ==
+                                                                                firebaseAuth.currentUser!.uid
+                                                                            ? 'You : ${snapshot2.data!.docs[index3]['message']}'
+                                                                            : '${snapshot.data!.docs[index]['name']} : ${snapshot2.data!.docs[index3]['message']}',
+                                                                        // '${snapshot2.data!.docs.last['message']}',
+                                                                        color: Colors
+                                                                            .white,
+                                                                        size:
+                                                                            13,
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                Column(
+                                                                  children: [
+                                                                    CommonText(
+                                                                      text:
+                                                                          '${time3} ago',
                                                                       color: Colors
                                                                           .white,
                                                                       size: 13,
-                                                                    );
-                                                                  },
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                              Column(
-                                                                children: [
-                                                                  CommonText(
-                                                                    text:
-                                                                        '${time3} ago',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    size: 13,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          );
-                                                        }
-                                                        return SizedBox();
-                                                      },
-                                                    )
-                                                  ],
+                                                              ],
+                                                            );
+                                                          }
+                                                          return SizedBox();
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      }
                                     }
                                     return SizedBox();
                                   },

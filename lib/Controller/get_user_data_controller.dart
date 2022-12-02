@@ -7,6 +7,8 @@ class UserdataController extends GetxController {
   String name = '';
   String image = '';
   String email = '';
+  String bgImage = '';
+  bool chatStatus = false;
   List allIds = [];
 
   getUserData() async {
@@ -19,6 +21,7 @@ class UserdataController extends GetxController {
     image = userData!['image'];
     name = userData['name'];
     email = userData['email'];
+    bgImage = userData['bgImage'];
     PrefrenceManager.setName(name);
     PrefrenceManager.setLogIn(email);
     update();
@@ -36,6 +39,30 @@ class UserdataController extends GetxController {
     }
 
     print('ALL DOCS IDS :- ${allData}');
+    update();
+  }
+
+  getChatStatus(roomId) async {
+    var data = await FirebaseFirestore.instance
+        .collection('chatroom')
+        .doc(roomId)
+        .get();
+    Map<String, dynamic>? userData = data.data();
+    chatStatus = userData!['isChat'];
+    updateStatus(roomId);
+    update();
+  }
+
+  updateStatus(roomId)async{
+    if(chatStatus==true){
+
+    }else{
+      await FirebaseFirestore.instance
+          .collection('chatroom')
+          .doc(roomId).update({
+        'isChat':true
+      });
+    }
     update();
   }
 }
