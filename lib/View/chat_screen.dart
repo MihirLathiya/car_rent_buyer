@@ -137,6 +137,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                       .docs[index]['name'],
                                                   sellerId: snapshot
                                                       .data!.docs[index].id,
+                                                  fcm: snapshot
+                                                      .data!.docs[index]['fcm'],
                                                 ),
                                               );
                                             },
@@ -149,6 +151,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     BorderRadius.circular(10),
                                               ),
                                               child: Container(
+                                                clipBehavior:
+                                                    Clip.antiAliasWithSaveLayer,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white12,
                                                   borderRadius:

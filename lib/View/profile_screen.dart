@@ -92,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: GetBuilder<UserdataController>(

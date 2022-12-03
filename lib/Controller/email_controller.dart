@@ -5,6 +5,7 @@ import 'package:car_buyer/Controller/add_image_controller.dart';
 import 'package:car_buyer/Controller/get_user_data_controller.dart';
 import 'package:car_buyer/PrefrenceManager/prefrence_manager.dart';
 import 'package:car_buyer/View/bottombar.dart';
+import 'package:car_buyer/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,6 +47,7 @@ class EmailController extends GetxController {
         'status': 'Online',
         'image': image,
         'bgImage': '',
+        'fcm': '',
       });
       PrefrenceManager.setLogIn(email);
       PrefrenceManager.setName(name!);
@@ -81,6 +83,7 @@ class EmailController extends GetxController {
           .signInWithEmailAndPassword(email: email!, password: password!);
       showAlert('LogIn Successful');
       Get.offAll(() => BottomBar());
+      await getFcmToken();
 
       buttonController!.reset();
       if (firebaseAuth.currentUser!.uid.isNotEmpty) {

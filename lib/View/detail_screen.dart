@@ -5,6 +5,7 @@ import 'package:car_buyer/Common/color.dart';
 import 'package:car_buyer/Common/common_text.dart';
 import 'package:car_buyer/Controller/detail_controller.dart';
 import 'package:car_buyer/Controller/email_controller.dart';
+import 'package:car_buyer/Controller/get_user_data_controller.dart';
 import 'package:car_buyer/View/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -50,10 +51,12 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   DetailController detailController = Get.put(DetailController());
+  UserdataController userdataController = Get.put(UserdataController());
 
   @override
   void initState() {
     detailController.favouriteData(widget.favouriteList!);
+    userdataController.getFcm(widget.sellerId!);
     super.initState();
   }
 
@@ -298,12 +301,13 @@ class _DetailScreenState extends State<DetailScreen> {
                                     .doc(roomId)
                                     .set({'isChat': false});
                               }
-
+                              log('FCM TOKEN ${userdataController.fcm}');
                               Get.to(
                                 () => ChatRoom(
                                   roomId: roomId,
                                   sellerName: widget.sellerName,
                                   sellerId: widget.sellerId,
+                                  fcm: userdataController.fcm,
                                 ),
                               );
                             },

@@ -7,17 +7,20 @@ import 'package:car_buyer/Common/common_text.dart';
 import 'package:car_buyer/Controller/add_image_controller.dart';
 import 'package:car_buyer/Controller/email_controller.dart';
 import 'package:car_buyer/Controller/get_user_data_controller.dart';
+import 'package:car_buyer/Notofication/notification.dart';
+import 'package:car_buyer/PrefrenceManager/prefrence_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatRoom extends StatefulWidget {
-  final sellerId, sellerName, roomId;
+  final sellerId, sellerName, roomId, fcm;
   const ChatRoom({
     Key? key,
     this.sellerId,
     this.sellerName,
     this.roomId,
+    this.fcm,
   }) : super(key: key);
 
   @override
@@ -391,6 +394,9 @@ class _ChatRoomState extends State<ChatRoom> {
           'isCheck': false,
         },
       );
+      AppNotificationHandler.sendMessage(
+          msg: '${PrefrenceManager.getName()} : ${message.text}',
+          receiverFcmToken: '${widget.fcm}');
 
       userdataController.getChatStatus(widget.roomId);
     } else {

@@ -9,6 +9,7 @@ class UserdataController extends GetxController {
   String email = '';
   String bgImage = '';
   bool chatStatus = false;
+  var fcm = '';
   List allIds = [];
 
   getUserData() async {
@@ -53,16 +54,24 @@ class UserdataController extends GetxController {
     update();
   }
 
-  updateStatus(roomId)async{
-    if(chatStatus==true){
-
-    }else{
+  updateStatus(roomId) async {
+    if (chatStatus == true) {
+    } else {
       await FirebaseFirestore.instance
           .collection('chatroom')
-          .doc(roomId).update({
-        'isChat':true
-      });
+          .doc(roomId)
+          .update({'isChat': true});
     }
+    update();
+  }
+
+  getFcm(String uid) async {
+    var data =
+        await FirebaseFirestore.instance.collection('seller').doc(uid).get();
+    Map<String, dynamic>? userData = data.data();
+
+    fcm = userData!['fcm'];
+
     update();
   }
 }
