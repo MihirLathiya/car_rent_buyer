@@ -159,6 +159,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                           ['CarTransmission'],
                                       type: carData[index]['CarType'],
                                       price: carData[index]['CarPrice'],
+                                      sellerId: carData[index]['CarSellerId'],
                                     ),
                                   );
                                 },

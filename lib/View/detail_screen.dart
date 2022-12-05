@@ -137,8 +137,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                           widget.carImage!),
                                       "Time": DateTime.now(),
                                       'Available': true,
-                                      "CarSellerId":
-                                          firebaseAuth.currentUser!.uid,
+                                      "CarSellerId": widget.sellerId,
                                       "CarName": widget.carName,
                                       "CarBrand": widget.company,
                                       "CarColor": widget.color,
