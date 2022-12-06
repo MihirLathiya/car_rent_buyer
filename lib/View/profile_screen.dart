@@ -8,6 +8,7 @@ import 'package:car_buyer/View/Auth/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   UserdataController userdataController = Get.put(UserdataController());
   ImageAddController imageAddController = Get.put(ImageAddController());
+  RoundedLoadingButtonController _buttonController =
+      RoundedLoadingButtonController();
 
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -81,6 +84,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
+                  GetBuilder<UserdataController>(
+                    builder: (controller) {
+                      if (controller.edit == false)
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                userdataController.updateValue(true);
+                              },
+                              child: CommonText(
+                                text: 'Edit',
+                                size: 14,
+                                color: AppColors.white,
+                                weight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        );
+                      return SizedBox();
+                    },
+                  ),
                   SizedBox(
                     height: 5,
                   ),
@@ -104,7 +129,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           builder: (controller2) {
                             return GestureDetector(
                               onTap: () {
-                                controller2.pickImage();
+                                if (controller.edit == true) {
+                                  controller2.pickImage();
+                                }
                               },
                               child: Container(
                                 height: 150,
@@ -150,6 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               focusedBorder: borderStyle,
                               fillColor: Colors.white38,
                               filled: true,
+                              enabled: controller.edit,
                             ),
                           ),
                         ),
@@ -168,48 +196,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               focusedBorder: borderStyle,
                               fillColor: Colors.white38,
                               filled: true,
+                              enabled: controller.edit,
                             ),
                           ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        SizedBox(
-                          width: Get.width - 200,
-                          child: CommonContainer(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.black),
-                              onPressed: () async {
-                                String? imageUrl =
-                                    imageAddController.userImage != null
+                        if (controller.edit == true)
+                          SizedBox(
+                            width: Get.width - 200,
+                            child: CommonContainer(
+                              child: RoundedLoadingButton(
+                                borderRadius: 5,
+                                color: Colors.black,
+                                onPressed: () async {
+                                  try {
+                                    String? imageUrl = imageAddController
+                                                .userImage !=
+                                            null
                                         ? await imageAddController.uploadFile(
                                             file: imageAddController.userImage,
                                             filename:
                                                 firebaseAuth.currentUser!.uid)
                                         : controller.image;
-                                FirebaseFirestore.instance
-                                    .collection('buyer')
-                                    .doc(firebaseAuth.currentUser!.uid)
-                                    .update(
-                                  {
-                                    'image': imageUrl!.trim(),
-                                    'name': name.text.trim(),
-                                    'email': email.text.trim(),
-                                  },
-                                ).then((value) {
-                                  controller.getUserData();
-                                  showAlert('Update successfully');
-                                });
-                                PrefrenceManager.setName(name.text.trim());
-                              },
-                              child: Text('Update'),
+                                    FirebaseFirestore.instance
+                                        .collection('buyer')
+                                        .doc(firebaseAuth.currentUser!.uid)
+                                        .update(
+                                      {
+                                        'image': imageUrl!.trim(),
+                                        'name': name.text.trim(),
+                                        'email': email.text.trim(),
+                                      },
+                                    ).then((value) {
+                                      controller.getUserData();
+                                      showAlert('Update successfully');
+                                      _buttonController.reset();
+                                      userdataController.updateValue(false);
+                                    });
+
+                                    PrefrenceManager.setName(name.text.trim());
+                                  } catch (e) {
+                                    _buttonController.reset();
+                                    userdataController.updateValue(false);
+                                  }
+                                },
+                                controller: _buttonController,
+                                child: Text('Update'),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        if (controller.edit == true)
+                          SizedBox(
+                            height: 10,
+                          ),
                         SizedBox(
                           width: Get.width - 200,
                           child: CommonContainer(

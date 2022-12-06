@@ -102,14 +102,22 @@ class _ChatRoomState extends State<ChatRoom> {
                                       color: AppColors.white,
                                       weight: FontWeight.w700,
                                     ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
                                     snapshot.data!['status'] == 'Online'
                                         ? Icon(
                                             Icons.sunny,
                                             color: Colors.green,
+                                            size: 15,
                                           )
-                                        : Icon(
-                                            Icons.nightlight_outlined,
-                                            color: Colors.red,
+                                        : Transform.rotate(
+                                            angle: 5.7,
+                                            child: Icon(
+                                              Icons.nightlight_outlined,
+                                              color: Colors.red,
+                                              size: 15,
+                                            ),
                                           ),
                                   ],
                                 );
@@ -298,7 +306,6 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return GetBuilder<UserdataController>(
       builder: (controller) {
-        log('BACK IMAGE :- ${controller.bgImage}');
         return controller.bgImage.isNotEmpty
             ? Container(
                 height: double.infinity,

@@ -245,6 +245,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                       .builder(
                                                                     shrinkWrap:
                                                                         true,
+                                                                    physics:
+                                                                        NeverScrollableScrollPhysics(),
                                                                     reverse:
                                                                         true,
                                                                     itemCount: snapshot2
@@ -256,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                             index3) {
                                                                       return CommonText(
                                                                         text:
-                                                                            '${snapshot2.data!.docs[index3]['message']}',
+                                                                            '${snapshot2.data!.docs.last['message']}',
                                                                         color: Colors
                                                                             .white,
                                                                         size:

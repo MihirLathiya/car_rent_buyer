@@ -300,7 +300,6 @@ class _DetailScreenState extends State<DetailScreen> {
                                     .doc(roomId)
                                     .set({'isChat': false});
                               }
-                              log('FCM TOKEN ${userdataController.fcm}');
                               Get.to(
                                 () => ChatRoom(
                                   roomId: roomId,

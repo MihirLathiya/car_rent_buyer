@@ -12,6 +12,13 @@ class UserdataController extends GetxController {
   var fcm = '';
   List allIds = [];
 
+  bool edit = false;
+
+  updateValue(bool val) {
+    edit = val;
+    update();
+  }
+
   getUserData() async {
     var data = await FirebaseFirestore.instance
         .collection('buyer')
